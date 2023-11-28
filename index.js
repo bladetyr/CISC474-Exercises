@@ -1,6 +1,35 @@
 const http = require('http')
 const port = 8080
 
+// Firebase-stolen code
+var admin = require("firebase-admin");
+
+var serviceAccount = require("/etc/secrets/firebaseauth.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://fir-node-project-cf4b4-default-rtdb.firebaseio.com"
+});
+
+
+// Add data
+// Get a database reference to our blog
+const { getDatabase } = require('firebase-admin/database');
+const db = getDatabase();
+const ref = db.ref('server/saving-data/');
+const usersRef = ref.child('users');
+usersRef.set({
+    alanisawesome: {
+        date_of_birth: 'June 23, 1912',
+        full_name: 'Alan Turing'
+    },
+    gracehop: {
+        date_of_birth: 'December 9, 1906',
+        full_name: 'Grace Hopper'
+    }
+});
+
+
 // Create a server object:
 const server = http.createServer(function (req, res) {
     // Write a response to the client
